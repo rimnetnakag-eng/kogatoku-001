@@ -2,36 +2,63 @@
 <html lang="ja">
 
 <head>
+
   <meta charset="UTF-8">
 
   <meta
     name="viewport"
-    content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    content="width=device-width,
+               initial-scale=1.0,
+               viewport-fit=cover"
   >
 
-  <meta name="mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta
+    name="apple-mobile-web-app-capable"
+    content="yes"
+  >
+
+  <meta
+    name="mobile-web-app-capable"
+    content="yes"
+  >
 
   <title>QRコード読み取り</title>
 
-  <!-- html5-qrcode -->
-  <script src="https://unpkg.com/html5-qrcode"></script>
+
+  <!-- ======================================================
+       html5-qrcode
+       ====================================================== -->
+
+  <script
+    src="https://unpkg.com/html5-qrcode">
+  </script>
+
 
   <style>
+
+    /* ======================================================
+       基本
+       ====================================================== */
 
     * {
       box-sizing: border-box;
     }
 
+
     html,
     body {
+
       margin: 0;
       padding: 0;
+
       width: 100%;
       min-height: 100%;
+
     }
 
+
     body {
+
       font-family:
         -apple-system,
         BlinkMacSystemFont,
@@ -40,153 +67,287 @@
         sans-serif;
 
       background: #ffffff;
+
       color: #222222;
 
       padding:
         20px
         16px
         calc(20px + env(safe-area-inset-bottom));
+
     }
 
 
-    /* ------------------------------
+
+    /* ======================================================
        タイトル
-       ------------------------------ */
+       ====================================================== */
 
     h2 {
-      margin: 10px 0 20px;
+
+      margin:
+        10px
+        0
+        20px;
+
       text-align: center;
+
       font-size: 24px;
+
       font-weight: 600;
+
     }
 
 
-    /* ------------------------------
-       QR Reader
-       ------------------------------ */
+
+    /* ======================================================
+       QRリーダー
+       ====================================================== */
 
     #reader {
-      width: min(500px, 100%);
-      margin: 0 auto;
+
+      width:
+        min(500px, 100%);
+
+      margin:
+        0 auto;
+
     }
 
-
-    /*
-     * html5-qrcodeが作るvideoを
-     * スマホ画面に合わせる
-     */
 
     #reader video {
-      width: 100% !important;
-      height: auto !important;
-      border-radius: 12px;
+
+      width:
+        100% !important;
+
+      height:
+        auto !important;
+
+      border-radius:
+        12px;
+
     }
 
 
-    /* ------------------------------
+
+    /* ======================================================
        ボタン
-       ------------------------------ */
+       ====================================================== */
 
     .button-area {
-      text-align: center;
-      margin-top: 15px;
+
+      text-align:
+        center;
+
+      margin-top:
+        15px;
+
     }
+
 
     button {
-      appearance: none;
-      -webkit-appearance: none;
 
-      border: 1px solid #999999;
-      border-radius: 8px;
+      appearance:
+        none;
 
-      background: #ffffff;
+      -webkit-appearance:
+        none;
 
-      padding: 12px 20px;
+      border:
+        1px solid #999;
 
-      font-size: 16px;
+      border-radius:
+        8px;
 
-      cursor: pointer;
+      background:
+        #fff;
 
-      touch-action: manipulation;
+      padding:
+        12px 20px;
+
+      font-size:
+        16px;
+
+      cursor:
+        pointer;
+
+      touch-action:
+        manipulation;
+
     }
+
 
     button:active {
-      background: #eeeeee;
+
+      background:
+        #eeeeee;
+
     }
 
 
-    /* ------------------------------
-       結果
-       ------------------------------ */
+
+    /* ======================================================
+       状態表示
+       ====================================================== */
+
+    #status {
+
+      width:
+        min(500px, 100%);
+
+      margin:
+        20px auto 0;
+
+      padding:
+        12px;
+
+      border-radius:
+        8px;
+
+      text-align:
+        center;
+
+      font-size:
+        16px;
+
+    }
+
+
+    .status-normal {
+
+      background:
+        #f5f5f5;
+
+      color:
+        #555;
+
+    }
+
+
+    .status-saving {
+
+      background:
+        #fff8e1;
+
+      color:
+        #8a6d00;
+
+    }
+
+
+    .status-success {
+
+      background:
+        #e8f5e9;
+
+      color:
+        #16803c;
+
+    }
+
+
+    .status-error {
+
+      background:
+        #ffebee;
+
+      color:
+        #c62828;
+
+    }
+
+
+
+    /* ======================================================
+       結果表示
+       ====================================================== */
 
     #result {
-      width: min(500px, 100%);
-      margin: 20px auto 0;
 
-      font-size: 17px;
-      line-height: 1.6;
+      width:
+        min(500px, 100%);
 
-      word-break: break-word;
+      margin:
+        20px auto 0;
+
+      font-size:
+        17px;
+
+      line-height:
+        1.6;
+
+      word-break:
+        break-word;
+
     }
+
 
     .result-item {
-      padding: 8px 0;
-      border-bottom: 1px solid #eeeeee;
+
+      padding:
+        8px 0;
+
+      border-bottom:
+        1px solid #eeeeee;
+
     }
+
 
     .success {
-      color: #16803c;
+
+      color:
+        #16803c;
+
     }
+
 
     .error {
-      color: #c62828;
+
+      color:
+        #c62828;
+
     }
 
-    .info {
-      color: #555555;
-    }
 
     .reading {
-      font-weight: bold;
+
+      font-weight:
+        bold;
+
     }
 
 
-    /* ------------------------------
-       保存中表示
-       ------------------------------ */
 
-    #saving {
-      display: none;
-
-      width: min(500px, 100%);
-      margin: 15px auto 0;
-
-      text-align: center;
-
-      font-size: 16px;
-      color: #555555;
-    }
-
-
-    /* ------------------------------
+    /* ======================================================
        カメラエラー
-       ------------------------------ */
+       ====================================================== */
 
     #camera-error {
-      display: none;
 
-      width: min(500px, 100%);
-      margin: 20px auto;
+      display:
+        none;
 
-      padding: 15px;
+      width:
+        min(500px, 100%);
 
-      border-radius: 8px;
+      margin:
+        20px auto;
 
-      background: #fff3f3;
+      padding:
+        15px;
 
-      color: #c62828;
+      border-radius:
+        8px;
 
-      line-height: 1.6;
+      background:
+        #fff3f3;
+
+      color:
+        #c62828;
+
+      line-height:
+        1.6;
+
     }
 
   </style>
@@ -194,36 +355,70 @@
 </head>
 
 
+
 <body>
 
-  <h2>どのおかずを食べるかな？</h2>
+
+  <!-- ======================================================
+       タイトル
+       ====================================================== -->
+
+  <h2>
+    どのおかずを食べるかな？
+  </h2>
 
 
-  <!-- カメラ -->
+
+  <!-- ======================================================
+       QRカメラ
+       ====================================================== -->
+
   <div id="reader"></div>
 
 
-  <!-- カメラエラー -->
+
+  <!-- ======================================================
+       カメラエラー
+       ====================================================== -->
+
   <div id="camera-error"></div>
 
 
-  <!-- 保存中 -->
-  <div id="saving">
-    保存中...
+
+  <!-- ======================================================
+       状態
+       ====================================================== -->
+
+  <div
+    id="status"
+    class="status-normal"
+  >
+    カメラを起動しています...
   </div>
 
 
-  <!-- iPhone / iPad用の音声開始ボタン -->
+
+  <!-- ======================================================
+       iPhone / iPad用 音声ボタン
+       ====================================================== -->
+
   <div class="button-area">
 
     <button id="sound">
-      🔊 Sound ON (iPhone / iPad)
+
+      🔊 Sound ON
+      (iPhone / iPad)
+
     </button>
 
   </div>
 
 
-  <!-- 結果 -->
+
+  <!-- ======================================================
+       読み取り結果
+       ====================================================== -->
+
   <div id="result"></div>
 
 
@@ -231,43 +426,58 @@
   <script>
 
 
-    // =========================================================
-    // ★★★ ここだけ変更してください ★★★
+    // ========================================================
+    // ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
+    //
+    // ★ ここだけ変更してください ★
     //
     // GAS WebアプリのURL
-    // =========================================================
+    //
+    // 例：
+    //
+    // https://script.google.com/macros/s/XXXXXXXX/exec
+    //
+    // ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
+    // ========================================================
 
     const GAS_URL =
       'https://script.google.com/a/macros/gs.seito-fku.ed.jp/s/AKfycbwVX6sD31NkOy5LVPLBEt4tblLdSfDt56gKiCMDRrGZKDKz9TDrn336JjiZ-H2V0N2o/exec';
 
 
-    // =========================================================
-    // 二重読み取り防止
-    // =========================================================
+
+    // ========================================================
+    // 状態
+    // ========================================================
 
     let CURRENT_TEXT = '';
-
-
-    // =========================================================
-    // 保存中フラグ
-    // =========================================================
 
     let IS_SAVING = false;
 
 
-    // =========================================================
-    // 結果表示
-    // =========================================================
 
-    function appendResult(text, className = '') {
+    // ========================================================
+    // 結果表示
+    // ========================================================
+
+    function appendResult(
+      text,
+      className = ''
+    ) {
 
       const div =
-        document.createElement('div');
+        document.createElement(
+          'div'
+        );
+
 
       div.className =
-        'result-item ' + className;
+        'result-item ' +
+        className;
 
-      div.textContent = text;
+
+      div.textContent =
+        text;
+
 
       document
         .querySelector('#result')
@@ -276,297 +486,46 @@
     }
 
 
-    // =========================================================
-    // 保存中表示
-    // =========================================================
 
-    function showSaving() {
+    // ========================================================
+    // ステータス表示
+    // ========================================================
 
-      document
-        .querySelector('#saving')
-        .style.display = 'block';
-
-    }
-
-
-    function hideSaving() {
-
-      document
-        .querySelector('#saving')
-        .style.display = 'none';
-
-    }
-
-
-    // =========================================================
-    // GASへデータをPOST
-    //
-    // fetchではなくHTML form + iframeを使用。
-    //
-    // iPhone / iPadのSafariでも、GASのCORSレスポンスを
-    // JavaScriptで直接読み取る必要がない構成。
-    // =========================================================
-
-    function sendToGas(decodedText) {
-
-      return new Promise((resolve, reject) => {
-
-        try {
-
-          // -----------------------------------------------
-          // iframeを作成
-          // -----------------------------------------------
-
-          const iframe =
-            document.createElement('iframe');
-
-          const iframeName =
-            'gas_submit_' +
-            Date.now() +
-            '_' +
-            Math.random()
-              .toString(36)
-              .substring(2);
-
-
-          iframe.name =
-            iframeName;
-
-          iframe.style.display =
-            'none';
-
-          document.body.appendChild(iframe);
-
-
-          // -----------------------------------------------
-          // formを作成
-          // -----------------------------------------------
-
-          const form =
-            document.createElement('form');
-
-          form.method =
-            'POST';
-
-          form.action =
-            GAS_URL;
-
-          form.target =
-            iframeName;
-
-          form.style.display =
-            'none';
-
-
-          // -----------------------------------------------
-          // QRコードの内容
-          // -----------------------------------------------
-
-          const input =
-            document.createElement('input');
-
-          input.type =
-            'hidden';
-
-          input.name =
-            'text';
-
-          input.value =
-            decodedText;
-
-
-          form.appendChild(input);
-
-          document.body.appendChild(form);
-
-
-          // -----------------------------------------------
-          // 送信
-          // -----------------------------------------------
-
-          form.submit();
-
-
-          // -----------------------------------------------
-          // 後始末
-          //
-          // GASへのPOST処理が完了する時間を少し待つ
-          // -----------------------------------------------
-
-          setTimeout(() => {
-
-            try {
-              form.remove();
-            } catch (e) {
-            }
-
-            try {
-              iframe.remove();
-            } catch (e) {
-            }
-
-
-            resolve({
-              success: true
-            });
-
-          }, 1500);
-
-
-        } catch (error) {
-
-          reject(error);
-
-        }
-
-      });
-
-    }
-
-
-    // =========================================================
-    // QRコード読み取り成功
-    // =========================================================
-
-    async function onScanSuccess(
-      decodedText,
-      decodedResult
+    function setStatus(
+      text,
+      className
     ) {
 
-      console.log(
-        'onScanSuccess:',
-        decodedText
-      );
-
-
-      // -----------------------------------------------
-      // 保存中なら新しい読み取りを無視
-      // -----------------------------------------------
-
-      if (IS_SAVING) {
-        return;
-      }
-
-
-      // -----------------------------------------------
-      // 同じQRコードの連続読み取りを防止
-      // -----------------------------------------------
-
-      if (CURRENT_TEXT === decodedText) {
-        return;
-      }
-
-
-      CURRENT_TEXT =
-        decodedText;
-
-      IS_SAVING =
-        true;
-
-
-      // -----------------------------------------------
-      // 読み取った内容を表示
-      // -----------------------------------------------
-
-      appendResult(
-        '読み取り：' + decodedText,
-        'reading'
-      );
-
-
-      // -----------------------------------------------
-      // 音
-      // -----------------------------------------------
-
-      beep();
-
-
-      // -----------------------------------------------
-      // 保存
-      // -----------------------------------------------
-
-      showSaving();
-
-
-      try {
-
-        await sendToGas(decodedText);
-
-
-        hideSaving();
-
-
-        appendResult(
-          '✓ 保存処理を送信しました。',
-          'success'
+      const status =
+        document.querySelector(
+          '#status'
         );
 
 
-      } catch (error) {
-
-        console.error(
-          'GAS communication error:',
-          error
-        );
+      status.textContent =
+        text;
 
 
-        hideSaving();
-
-
-        appendResult(
-          '✕ 保存に失敗しました：' +
-          error.message,
-          'error'
-        );
-
-
-        // 保存に失敗したので
-        // 同じQRをもう一度読めるようにする
-        CURRENT_TEXT = '';
-
-      }
-
-
-      // -----------------------------------------------
-      // 少し待ってから次のQRを読めるようにする
-      // -----------------------------------------------
-
-      setTimeout(() => {
-
-        IS_SAVING =
-          false;
-
-      }, 1000);
+      status.className =
+        className;
 
     }
 
 
 
-    // =========================================================
-    // QRコード読み取りエラー
-    //
-    // QRがまだ認識できない場合に大量表示されるため、
-    // ここでは何もしません。
-    // =========================================================
-
-    function onScanFailure(error) {
-
-      // 何もしない
-
-    }
-
-
-
-    // =========================================================
+    // ========================================================
     // カメラエラー
-    // =========================================================
+    // ========================================================
 
-    function showCameraError(error) {
+    function showCameraError(
+      error
+    ) {
 
       const area =
         document.querySelector(
           '#camera-error'
         );
+
 
       area.style.display =
         'block';
@@ -578,7 +537,8 @@
 
       if (
         error &&
-        error.name === 'NotAllowedError'
+        error.name ===
+          'NotAllowedError'
       ) {
 
         message =
@@ -586,22 +546,30 @@
           '<br><br>' +
           'ブラウザの設定で、このWebサイトのカメラ使用を許可してください。';
 
-      } else if (
+      }
+
+
+      else if (
         error &&
-        error.name === 'NotFoundError'
+        error.name ===
+          'NotFoundError'
       ) {
 
         message =
           'カメラが見つかりませんでした。';
 
-      } else if (
+      }
+
+
+      else if (
         error &&
-        error.name === 'NotReadableError'
+        error.name ===
+          'NotReadableError'
       ) {
 
         message =
           'カメラを使用できませんでした。' +
-          '<br>' +
+          '<br><br>' +
           '他のアプリがカメラを使用していないか確認してください。';
 
       }
@@ -614,18 +582,494 @@
 
 
 
-    // =========================================================
-    // html5-qrcode開始
-    // =========================================================
+    // ========================================================
+    // GASへ保存
+    //
+    // 重要：
+    //
+    // iPhone / iPadではCORS制約があるため、
+    // fetch()でGASのレスポンスを直接取得しません。
+    //
+    // HTML form → iframe
+    //
+    // でPOSTします。
+    //
+    // ========================================================
+
+    function sendToGas(
+      decodedText
+    ) {
+
+      return new Promise(
+        function(resolve, reject) {
+
+
+          let finished =
+            false;
+
+
+          // --------------------------------------------------
+          // 完了処理
+          // --------------------------------------------------
+
+          function finish(
+            success,
+            message
+          ) {
+
+            if (finished) {
+              return;
+            }
+
+
+            finished = true;
+
+
+            if (success) {
+
+              resolve({
+                success: true,
+                message: message
+              });
+
+            }
+
+            else {
+
+              reject(
+                new Error(
+                  message
+                )
+              );
+
+            }
+
+          }
+
+
+
+          // --------------------------------------------------
+          // iframe
+          // --------------------------------------------------
+
+          const iframe =
+            document.createElement(
+              'iframe'
+            );
+
+
+          const iframeName =
+            'gas_' +
+            Date.now() +
+            '_' +
+            Math.random()
+              .toString(36)
+              .substring(2);
+
+
+          iframe.name =
+            iframeName;
+
+
+          iframe.style.display =
+            'none';
+
+
+          document.body
+            .appendChild(
+              iframe
+            );
+
+
+
+          // --------------------------------------------------
+          // form
+          // --------------------------------------------------
+
+          const form =
+            document.createElement(
+              'form'
+            );
+
+
+          form.method =
+            'POST';
+
+
+          form.action =
+            GAS_URL;
+
+
+          form.target =
+            iframeName;
+
+
+          form.style.display =
+            'none';
+
+
+
+          // --------------------------------------------------
+          // QRデータ
+          // --------------------------------------------------
+
+          const input =
+            document.createElement(
+              'input'
+            );
+
+
+          input.type =
+            'hidden';
+
+
+          input.name =
+            'text';
+
+
+          input.value =
+            decodedText;
+
+
+          form.appendChild(
+            input
+          );
+
+
+          document.body
+            .appendChild(
+              form
+            );
+
+
+
+          // --------------------------------------------------
+          // 送信
+          // --------------------------------------------------
+
+          try {
+
+            form.submit();
+
+          }
+
+          catch (error) {
+
+            try {
+              form.remove();
+            }
+            catch (e) {
+            }
+
+
+            try {
+              iframe.remove();
+            }
+            catch (e) {
+            }
+
+
+            finish(
+              false,
+              'GASへの送信に失敗しました。'
+            );
+
+
+            return;
+
+          }
+
+
+
+          // --------------------------------------------------
+          // 注意
+          //
+          // クロスオリジンiframeなので、
+          // GASから返された本文をJavaScriptで
+          // 読み取ることはしません。
+          //
+          // 一定時間後に送信成功と判断します。
+          // --------------------------------------------------
+
+          setTimeout(
+            function() {
+
+
+              try {
+                form.remove();
+              }
+              catch (e) {
+              }
+
+
+              try {
+                iframe.remove();
+              }
+              catch (e) {
+              }
+
+
+              finish(
+                true,
+                'GASへ送信しました。'
+              );
+
+
+            },
+            2000
+          );
+
+
+
+          // --------------------------------------------------
+          // 通信タイムアウト
+          // --------------------------------------------------
+
+          setTimeout(
+            function() {
+
+              if (!finished) {
+
+                try {
+                  form.remove();
+                }
+                catch (e) {
+                }
+
+
+                try {
+                  iframe.remove();
+                }
+                catch (e) {
+                }
+
+
+                finish(
+                  false,
+                  'GASへの通信がタイムアウトしました。'
+                );
+
+              }
+
+            },
+            10000
+          );
+
+        }
+      );
+
+    }
+
+
+
+    // ========================================================
+    // QR読み取り成功
+    // ========================================================
+
+    async function onScanSuccess(
+      decodedText,
+      decodedResult
+    ) {
+
+
+      console.log(
+        'QR:',
+        decodedText
+      );
+
+
+      // ------------------------------------------------------
+      // 保存中なら無視
+      // ------------------------------------------------------
+
+      if (IS_SAVING) {
+        return;
+      }
+
+
+
+      // ------------------------------------------------------
+      // 同じQRコードの連続読み取り防止
+      // ------------------------------------------------------
+
+      if (
+        CURRENT_TEXT ===
+        decodedText
+      ) {
+
+        return;
+
+      }
+
+
+
+      CURRENT_TEXT =
+        decodedText;
+
+
+      IS_SAVING =
+        true;
+
+
+
+      // ------------------------------------------------------
+      // 表示
+      // ------------------------------------------------------
+
+      appendResult(
+        '読み取り：' +
+        decodedText,
+        'reading'
+      );
+
+
+
+      // ------------------------------------------------------
+      // 音
+      // ------------------------------------------------------
+
+      beep();
+
+
+
+      // ------------------------------------------------------
+      // 保存中
+      // ------------------------------------------------------
+
+      setStatus(
+        '保存しています...',
+        'status-saving'
+      );
+
+
+
+      try {
+
+
+        // ----------------------------------------------------
+        // GASへ送信
+        // ----------------------------------------------------
+
+        await sendToGas(
+          decodedText
+        );
+
+
+
+        // ----------------------------------------------------
+        // 成功
+        // ----------------------------------------------------
+
+        setStatus(
+          '✓ 保存処理を完了しました',
+          'status-success'
+        );
+
+
+        appendResult(
+          '✓ GASへ送信しました。',
+          'success'
+        );
+
+
+      }
+
+
+      catch (error) {
+
+
+        // ----------------------------------------------------
+        // 失敗
+        // ----------------------------------------------------
+
+        console.error(
+          error
+        );
+
+
+        setStatus(
+          '✕ 保存に失敗しました',
+          'status-error'
+        );
+
+
+        appendResult(
+          '✕ 保存に失敗しました：' +
+          error.message,
+          'error'
+        );
+
+
+        // 再読み取り可能にする
+        CURRENT_TEXT =
+          '';
+
+      }
+
+
+
+      // ------------------------------------------------------
+      // 次の読み取り
+      // ------------------------------------------------------
+
+      setTimeout(
+        function() {
+
+          IS_SAVING =
+            false;
+
+          if (
+            CURRENT_TEXT ===
+            decodedText
+          ) {
+
+            setStatus(
+              'QRコードを読み取れます',
+              'status-normal'
+            );
+
+          }
+
+        },
+        1200
+      );
+
+    }
+
+
+
+    // ========================================================
+    // QR読み取り中のエラー
+    //
+    // 読み取りできないフレームがあるだけなので
+    // ここでは何もしません。
+    // ========================================================
+
+    function onScanFailure(
+      error
+    ) {
+
+      // 何もしない
+
+    }
+
+
+
+    // ========================================================
+    // QRスキャナー開始
+    // ========================================================
 
     function startScanner() {
 
+
       try {
+
 
         const scanner =
           new Html5QrcodeScanner(
             'reader',
             {
+
               fps: 10,
 
               qrbox: {
@@ -633,15 +1077,20 @@
                 height: 250
               },
 
-              rememberLastUsedCamera: true,
+              rememberLastUsedCamera:
+                true,
 
-              showTorchButtonIfSupported: true,
+              showTorchButtonIfSupported:
+                true,
 
-              showZoomSliderIfSupported: true
+              showZoomSliderIfSupported:
+                true
+
             },
 
             false
           );
+
 
 
         scanner.render(
@@ -650,14 +1099,34 @@
         );
 
 
-      } catch (error) {
+
+        setStatus(
+          'カメラを起動しています...',
+          'status-normal'
+        );
+
+
+      }
+
+
+      catch (error) {
+
 
         console.error(
           'Scanner error:',
           error
         );
 
-        showCameraError(error);
+
+        setStatus(
+          'カメラを起動できませんでした',
+          'status-error'
+        );
+
+
+        showCameraError(
+          error
+        );
 
       }
 
@@ -665,41 +1134,49 @@
 
 
 
-    // =========================================================
-    // 音声
-    //
-    // 元のindex.htmlに入っていた音声データを使用。
-    // =========================================================
+    // ========================================================
+    // ビープ音
+    // ========================================================
 
     const DATA_URL =
-      "data:audio/wav;base64,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qJrx4KOQjahZxWbcZgztj2c49eV9yDK6uPRzx5X18eDvjvQ6yKo9ZSS6l//8elePK/Lf//IInrOF/FvDoADYAGBMGb7FtErm5MXMlmPAJQVgWta7Zx2go+8xJ0UiCb8LHHdftWyLJE0QIAIsI+UbXu67dZMjmgDGCGl1H+vpF4NSDckSIkk7Vd+sxEhBQMRU8j/12UIRhzSaUdQ+rQU5kGeFxm+hb1oh6pWWmv3uvmReDl0UnvtapVaIzo1jZbf/pD6ElLqSX+rUmOQNpJFa/r+sa4e/pBlAABoAAAAA3CUgShLdGIxsY7AUABPRrgCABdDuQ5GC7DqPQCgbbJUAoRSUj+NIEig0YfyWUho1VBBBA//uZB4ABZx5zfMakeAAAAmwAAAAF5F3P0w9GtAAACfAAAAAwLhMDmAYWMgVEG1U0FIGCBgXBXAtfMH10000EEEEEECUBYln03TTTdNBDZopopYvrTTdNa325mImNg3TTPV9q3pmY0xoO6bv3r00y+IDGid/9aaaZTGMuj9mpu9Mpio1dXrr5HERTZSmqU36A3CumzN/9Robv/Xx4v9ijkSRSNLQhAWumap82WRSBUqXStV/YcS+XVLnSS+WLDroqArFkMEsAS+eWmrUzrO0oEmE40RlMZ5+ODIkAyKAGUwZ3mVKmcamcJnMW26MRPgUw6j+LkhyHGVGYjSUUKNpuJUQoOIAyDvEyG8S5yfK6dhZc0Tx1KI/gviKL6qvvFs1+bWtaz58uUNnryq6kt5RzOCkPWlVqVX2a/EEBUdU1KrXLf40GoiiFXK///qpoiDXrOgqDR38JB0bw7SoL+ZB9o1RCkQjQ2CBYZKd/+VJxZRRZlqSkKiws0WFxUyCwsKiMy7hUVFhIaCrNQsKkTIsLivwKKigsj8XYlwt/WKi2N4d//uQRCSAAjURNIHpMZBGYiaQPSYyAAABLAAAAAAAACWAAAAApUF/Mg+0aohSIRobBAsMlO//Kk4soosy1JSFRYWaLC4qZBYWFRGZdwqKiwkNBVmoWFSJkWFxX4FFRQWR+LsS4W/rFRb/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////VEFHAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAU291bmRib3kuZGUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAU291bmRib3kuZGUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMjAwNGh0dHA6Ly93d3cuc291bmRib3kuZGUAAAAAAAAAACU=";
+      "data:audio/wav;base64,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ycqJrx4KOQjahZxWbcZgztj2c49eV9yDK6uPRzx5X18eDvjvQ6yKo9ZSS6l//8elePK/Lf//IInrOF/FvDoADYAGBMGb7FtErm5MXMlmPAJQVgWta7Zx2go+8xJ0UiCb8LHHdftWyLJE0QIAIsI+UbXu67dZMjmgDGCGl1H+vpF4NSDckSIkk7Vd+sxEhBQMRU8j/12UIRhzSaUdQ+rQU5kGeFxm+hb1oh6pWWmv3uvmReDl0UnvtapVaIzo1jZbf/pD6ElLqSX+rUmOQNpJFa/r+sa4e/pBlAABoAAAAA3CUgShLdGIxsY7AUABPRrgCABdDuQ5GC7DqPQCgbbJUAoRSUj+NIEig0YfyWUho1VBBBA//uZB4ABZx5zfMakeAAAAmwAAAAF5F3P0w9GtAAACfAAAAAwLhMDmAYWMgVEG1U0FIGCBgXBXAtfMH10000EEEEEECUBYln03TTTdNBDZopopYvrTTdNa325mImNg3TTPV9q3pmY0xoO6bv3r00y+IDGid/9aaaZTGMuj9mpu9Mpio1dXrr5HERTZSmqU36A3CumzN/9Robv/Xx4v9ijkSRSNLQhAWumap82WRSBUqXStV/YcS+XVLnSS+WLDroqArFkMEsAS+eWmrUzrO0oEmE40RlMZ5+ODIkAyKAGUwZ3mVKmcamcJnMW26MRPgUw6j+LkhyHGVGYjSUUKNpuJUQoOIAyDvEyG8S5yfK6dhZc0Tx1KI/gviKL6qvvFs1+bWtaz58uUNnryq6kt5RzOCkPWlVqVX2a/EEBUdU1KrXLf40GoiiFXK///qpoiDXrOgqDR38JB0bw7SoL+ZB9o1RCkQjQ2CBYZKd/+VJxZRRZlqSkKiws0WFxUyCwsKiMy7hUVFhIaCrNQsKkTIsLivwKKigsj8XYlwt/WKi2N4d//uQRCSAAjURNIHpMZBGYiaQPSYyAAABLAAAAAAAACWAAAAApUF/Mg+0aohSIRobBAsMlO//Kk4soosy1JSFRYWaLC4qZBYWFRGZdwqKiwkNBVmoWFSJkWFxX4FFRQWR+LsS4W/rFRb/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////VEFHAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAU291bmRib3kuZGUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAU291bmRib3kuZGUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMjAwNGh0dHA6Ly93d3cuc291bmRib3kuZGUAAAAAAAAAACU=";
+
 
 
     const AUDIO =
       new Audio();
 
+
     AUDIO.autoplay =
       true;
+
 
 
     function beep() {
 
       try {
+
         AUDIO.src =
           DATA_URL;
-      } catch (error) {
+
+      }
+
+      catch (error) {
+
         console.log(
           'Audio error:',
           error
         );
+
       }
 
     }
 
 
-    // =========================================================
-    // iPhone / iPadで音声許可を取得
-    // =========================================================
+
+    // ========================================================
+    // iPhone / iPad 音声許可
+    // ========================================================
 
     document
       .querySelector('#sound')
@@ -709,6 +1186,7 @@
 
           beep();
 
+
           this.textContent =
             '🔊 Sound ON';
 
@@ -716,9 +1194,10 @@
       );
 
 
-    // =========================================================
-    // ページ読み込み完了
-    // =========================================================
+
+    // ========================================================
+    // ページ読み込み
+    // ========================================================
 
     window.addEventListener(
       'load',

@@ -105,92 +105,79 @@
     // JSONPを使用するのでCORS問題を回避
     // ========================================
 
-    function sendToGas(decodedText) {
+function sendToGas(decodedText) {
 
-      return new Promise((resolve, reject) => {
+  return new Promise((resolve, reject) => {
 
-        // JSONPのcallback名
-        const callbackName =
-          'gasCallback_' + Date.now();
+    try {
 
-        // callbackをグローバルに作成
-        window[callbackName] = function(response) {
+      // GASへ送信するフォーム
+      const form = document.createElement('form');
 
-          // scriptタグを削除
-          if (script.parentNode) {
-            script.parentNode.removeChild(script);
-          }
+      form.method = 'POST';
+      form.action = GAS_URL;
 
-          // callbackを削除
-          delete window[callbackName];
+      // 別のiframeへ送信
+      const iframeName =
+        'gas_submit_' + Date.now();
 
-          if (response && response.success) {
-            resolve(response);
-          } else {
-            reject(
-              new Error(
-                response && response.message
-                  ? response.message
-                  : 'GASへの保存に失敗しました。'
-              )
-            );
-          }
-        };
+      const iframe =
+        document.createElement('iframe');
+
+      iframe.name = iframeName;
+      iframe.style.display = 'none';
+
+      document.body.appendChild(iframe);
+
+      form.target = iframeName;
 
 
-        // タイムアウト
-        const timeout = setTimeout(() => {
+      // QRコード
+      const input =
+        document.createElement('input');
 
-          if (script.parentNode) {
-            script.parentNode.removeChild(script);
-          }
+      input.type = 'hidden';
+      input.name = 'text';
+      input.value = decodedText;
 
-          delete window[callbackName];
-
-          reject(
-            new Error('GASへの接続がタイムアウトしました。')
-          );
-
-        }, 15000);
+      form.appendChild(input);
 
 
-        // GAS URL
-        const url =
-          GAS_URL +
-          '?text=' + encodeURIComponent(decodedText) +
-          '&callback=' + encodeURIComponent(callbackName);
+      // フォームを送信
+      document.body.appendChild(form);
+
+      form.submit();
 
 
-        // scriptタグを作成
-        const script =
-          document.createElement('script');
+      // GAS側の処理が完了するまで少し待つ
+      //
+      // クロスオリジンのため、iPad側から
+      // GASのレスポンス内容を直接読むことはしません。
+      //
+      // 送信自体が正常に開始されたら成功とします。
 
-        script.src = url;
+      setTimeout(() => {
 
+        form.remove();
 
-        // 読み込みエラー
-        script.onerror = function() {
+        iframe.remove();
 
-          clearTimeout(timeout);
+        resolve({
+          success: true
+        });
 
-          if (script.parentNode) {
-            script.parentNode.removeChild(script);
-          }
-
-          delete window[callbackName];
-
-          reject(
-            new Error('GASへの通信に失敗しました。')
-          );
-
-        };
+      }, 1500);
 
 
-        document.body.appendChild(script);
+    } catch (error) {
 
-      });
+      reject(error);
 
     }
+
+  });
+
+}
 
 
     // ========================================
